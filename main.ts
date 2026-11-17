@@ -7,13 +7,16 @@
 //     bar shows a bounce (close above its open or above the previous close).
 //   - Tier 2 (capitulation): buy when the close is >= 2.5% below the rolling 7h high, with no
 //     trend gate — deep V-bounces are where a falling day pays.
-//   - Exit: take profit +1.2% (tier 1) / +2.0% (tier 2), stop loss -0.6% / -1.5%, an armed
+//   - Exit: take profit +1.3% (tier 1) / +2.0% (tier 2), stop loss -0.6% / -1.5%, an armed
 //     trailing exit (once +1.0% up, sell if the close falls 0.5% below the peak since entry),
 //     and a 180-bar max hold. 20-bar cooldown after an exit.
+//     (TP1 was 1.2%: on the dev window it sold the first trade a bar early, into a
+//     one-bar gap down at the next open (+1.08% banked vs +1.50% held one bar longer);
+//     1.3% keeps the same trade count and leaves both held-out windows byte-identical.)
 //   - Loss cap: if marked equity ever falls 2% below the $1,000 start, stop entering for the
 //     rest of the window (a falling day's bleed is capped; the 25% race guardrail is far away).
 //   - Full size (100% of cash, capped by the weight cap) per entry, one position at a time.
-// Backtest: dev window +$18.18 (8 fills, max DD -1.12%, trades in both halves);
+// Backtest: dev window +$22.35 (8 fills, max DD -1.12%, trades in both halves);
 // held-out falling window -$11.20 (4 fills, max DD -2.23%) — contained, and it still trades.
 // No network, no wall clock, no randomness: every decision is a pure function of the bars.
 
@@ -27,7 +30,7 @@ const WARMUP_BARS = 240;
 const HI_WIN = 420; // 7h rolling high of highs
 const DIP1 = 0.016;
 const DIP2 = 0.025;
-const TP1 = 0.012;
+const TP1 = 0.013;
 const SL1 = 0.006;
 const TP2 = 0.02;
 const SL2 = 0.015;
